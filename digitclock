@@ -1,0 +1,21 @@
+# Compares sum of digits to the sum of tick marks of each digit on a digital clock display
+
+tick_ct = [6,2,5,5,4,5,5,3,7,5]
+
+for x in range(1,13):
+        for y in range(1,60):
+                if x/10 > 0:
+                        dig1_ct = tick_ct[x/10]
+                else:
+                        dig1_ct = 0
+                dig2_ct = tick_ct[x%10]
+                dig3_ct = tick_ct[y/10]
+                dig4_ct = tick_ct[y%10]
+#               print "Number of tick marks in %s:%s is %s" % (x,y,
+                tick_sum = dig1_ct + dig2_ct + dig3_ct + dig4_ct
+                dig_sum = x/10 + x%10 + y/10 + y%10
+                if dig_sum == tick_sum:
+
+                        print "Ticks of %s:%02s equal sum of digits: %s" % (x,y,dig_sum)
+                y = y + 1
+        x = x+ 1

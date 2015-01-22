@@ -1,0 +1,120 @@
+#include <iostream>
+using namespace std;
+
+int u[9][9] = {{0,4,5,8,0,3,7,1,0},{8,1,0,0,0,0,0,2,4},{7,0,9,0,0,0,5,0,8},
+                {0,0,0,9,0,7,0,0,0},{0,0,0,0,6,0,0,0,0},{0,0,0,4,0,2,0,0,0},
+                {6,0,4,0,0,0,3,0,5},{3,2,0,0,0,0,0,8,7},{0,5,7,3,0,8,2,6,0}};
+int a[9][9] = {{0,4,5,8,0,3,7,1,0},{8,1,0,0,0,0,0,2,4},{7,0,9,0,0,0,5,0,8},
+                {0,0,0,9,0,7,0,0,0},{0,0,0,0,6,0,0,0,0},{0,0,0,4,0,2,0,0,0},
+                {6,0,4,0,0,0,3,0,5},{3,2,0,0,0,0,0,8,7},{0,5,7,3,0,8,2,6,0}};
+
+
+
+
+
+
+int s(int i,int j,int n)
+{
+// flags
+int flag=0;
+for (int w=0;w<9;w++) {
+        for (int x=0;x<9;x++) {
+                cout << "[" << a[w][x] << "]";
+        } cout << "\n"; }
+        if (j==9 || i==9) {return 0;}
+
+// if trying to assign current space a value over 9, back up
+        if (n>9) {
+                if(i==0 && j==0) {
+                return s(0,1,a[0][1]+1); }
+                if (j==8) { i--; j=0; }
+                        else j--;
+
+// if back up space has a set number in u, back up more
+                while (u[i][j] > 0) {
+                        cout << "here1\n";
+
+// accounts for reaching end/beginning of a row
+                        if (j==8) {
+                        i--;
+                        i=0; }
+                        else j--; }
+
+                return s(i,j,a[i][j]+1); }
+
+// if a number exists in that cell
+        if (u[i][j]>0) {
+
+// set the current cell to that number
+                a[i][j]=u[i][j];
+                while (u[i][j] != 0) {
+                        if (j==8) {
+                                i++; j=0;
+                        } else  j++;
+                        return s(i,j,1);
+                        } // while
+        else {
+// assign n to current space
+                a[i][j]=n;
+                flag=0;
+// check if it conflicts with any square in its own sub-grid
+                for (int k=i/3*3;k<=i/3*3+2;k++) {
+                        for (int l=j/3*3;l<=j/3*3+2;l++) {
+// if the current square equals the square value in the loop, but is not the current square
+                                if (a[i][j]==a[k][l] && (i!=k || l!=j) && a[i][j] != 0) {
+                                        flag=1;
+                                        }}}
+
+// check for conflicts in rows and columns
+                                for (int c=0;c<9;c++) {
+                                        if(a[c][j]==a[i][j] && (i!=c) && a[i][j] !=0)
+                                        {flag=1;}
+                                }
+                                for (int b=0;b<9;b++) {
+                                        if(a[i][b]==a[i][j] && (j!=b) && a[i][j] !=0)
+                                        {flag=1;}
+                                }
+
+// if conflicts exist
+                                if (flag==1) {
+                                        if (a[i][j]==9) {
+                                        if (j==0 && i==0) {return s(0,0,a[0][0]+1);}
+                                        a[i][j]=0;
+// back up PAST existing numbers in u
+                                        if (j==0) { cout << "j==0";
+                                                i--;
+                                                j=8; }
+                                        else {cout << "j--"; j--;}
+                                        while (u[i][j] !=0) {
+                                                if(j==0) {i--;j=8;}
+                                                else j--; }
+                                        return s(i,j,a[i][j]+1); }
+                                        else {a[i][j]++;
+                                        return s(i,j,a[i][j]);
+                                }}
+// otherwise, increment to next square
+
+                                        if (j==8) {
+                                                i++;
+                                                j=0;
+                                        } else { j++; }
+                                        return s(i,j,1);
+
+
+}
+}
+
+int main() {
+
+
+s(0,0,1);
+
+for(int n=0;n<9;n++) {
+        for(int m=0;m<9;m++) {
+        cout << "[" << a[n][m] << "]";
+        }
+        cout << "\n";
+        }
+
+
+return 0;}     

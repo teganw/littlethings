@@ -17,10 +17,7 @@ int s(int i,int j,int n)
 {
 // flags
 int flag=0;
-for (int w=0;w<9;w++) {
-        for (int x=0;x<9;x++) {
-                cout << "[" << a[w][x] << "]";
-        } cout << "\n"; }
+
         if (j==9 || i==9) {return 0;}
 
 // if trying to assign current space a value over 9, back up
